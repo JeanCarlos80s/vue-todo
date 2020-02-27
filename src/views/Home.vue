@@ -1,11 +1,11 @@
 <template>
   <div class="container grid-xs py-2">
-    <img class="img-responsive img-logo" src="@/assets/logo-jc.png" alt="Logo JC" />
+    <!-- <img class="img-responsive img-logo" src="@/assets/logo-jc.png" alt="Logo JC" /> -->
 
     <form @submit.prevent="addTodo(todo)">
       <div class="input-group">
         <input type="text" class="form-input" v-model="todo.description" placeholder="Novo todo" />
-        <button class="btn btn-primary input-group-btn">Add</button>
+        <button class="btn btn-primary input-group-btn" :class="{loading}">Add</button>
       </div>
     </form>
     <div class="todo-list">
@@ -21,13 +21,22 @@ export default {
   name: 'App',
   components: { Todo },
   data() {
-    return { todos: [], todo: { checked: false }}
+    return { todo: { checked: false }, loading: false}
+  },
+  computed: {
+    todos() {
+      return this.$store.state.todos
+    }
   },
   methods: {
-    addTodo(todo){
-      todo.id = Date.now()
-      this.todos.push(todo)
-      this.todo = { checked: false }
+    async addTodo(todo){
+      try {
+        this.loading = true
+        await this.$store.dispatch("addTodo", todo)
+        this.todo = { checked: false }
+      } finally {
+        this.loading = false
+      }
     },
     toggleTodo(todo) {
       const index = this.todos.findIndex(item => item.id === todo.id)
@@ -47,11 +56,11 @@ export default {
 </script>
 
 <style scoped>
-.img-logo {
+/* .img-logo {
   max-width: 150px;
   margin: 0 auto;
   padding: 25px;
-}
+} */
 .todo-list {
   padding-top: 2rem;
 }

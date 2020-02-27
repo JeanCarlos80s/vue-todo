@@ -1,5 +1,33 @@
 <template>
   <div id="app">
-    <router-view/>
+    <div class="container grid-lg">
+      <header class="navbar">
+        <section class="navbar-section">
+          <router-link to="/" class="btn btn-link">Home</router-link>
+          <router-link to="/kanban" class="btn btn-link">Kanban</router-link>
+        </section>
+
+        <section class="navbar-center">
+          <img class="img-responsive img-logo" src="@/assets/logo-jc.png" alt="Logo JC">
+        </section>
+
+        <section class="navbar-section">
+          <a href="" class="btn btn-link">Tweeter</a>
+          <a href="" class="btn btn-link">GitHub</a>
+        </section>
+      </header>
+      
+      <router-view/>
+    </div>
+
   </div>
 </template>
+
+<style scoped>
+.img-logo {
+  max-width: 60px;
+}
+.container {
+  margin-top: 20px;
+}
+</style>
