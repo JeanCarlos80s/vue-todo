@@ -14,7 +14,7 @@ const actions = {
                 commit('addTodo', todo)
                 commit('setLoading', false)
                 resolve(todo)
-            }, 1000)
+            }, 500)
         })
     },
     toggleTodo({commit}, todo) {
@@ -22,6 +22,15 @@ const actions = {
     },
     removeTodo({commit}, todo) {
         commit('removeTodo', todo)
+    }
+}
+
+const getters = {
+    uncheckeds(state) {
+        return state.todos.filter(todo => todo.checked === false)
+    },
+    checkeds(state) {
+        return state.todos.filter(todo => todo.checked)
     }
 }
 
@@ -44,6 +53,6 @@ const mutations = {
     }
 }
 
-const store = new Vuex.Store({ state, actions, mutations })
+const store = new Vuex.Store({ state, actions, mutations, getters })
 
 export default store

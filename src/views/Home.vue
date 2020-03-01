@@ -2,7 +2,7 @@
   <div class="container grid-xs py-2">
     <!-- <img class="img-responsive img-logo" src="@/assets/logo-jc.png" alt="Logo JC" /> -->
 
-    <form @submit.prevent="addTodo(todo)">
+    <form @submit.prevent="add(todo)">
       <div class="input-group">
         <input type="text" class="form-input" v-model="todo.description" placeholder="Novo todo" />
         <button class="btn btn-primary input-group-btn" :class="{loading}">Add</button>
@@ -17,6 +17,8 @@
 <script>
 import Todo from "@/components/Todo"
 
+import { mapActions, mapState } from 'vuex'
+
 export default {
   name: 'App',
   components: { Todo },
@@ -24,23 +26,14 @@ export default {
     return { todo: { checked: false }}
   },
   computed: {
-    todos() {
-      return this.$store.state.todos
-    },
-    loading() {
-      return this.$store.state.loading
-    }
+    ...mapState(['todos', 'loading'])
   },
   methods: {
-    async addTodo(todo){
-      await this.$store.dispatch("addTodo", todo)
+    ...mapActions(['addTodo', 'toggleTodo', 'removeTodo']),
+
+    async add(todo){
+      await this.addTodo(todo)
       this.todo = { checked: false }
-    },
-    toggleTodo(todo) {
-      this.$store.dispatch('toggleTodo', todo)
-    },
-    removeTodo(todo) {
-      this.$store.dispatch('removeTodo', todo)
     }
   }
 }
